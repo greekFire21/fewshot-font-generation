@@ -8,4 +8,4 @@ fonttools==4.55.3
 msgpack==1.1.0
 adamp==0.3.0
 lpips==0.1.4
-tensorboardX==2.6.2.2
+tensorboard==2.18.0
