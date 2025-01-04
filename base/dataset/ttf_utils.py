@@ -35,7 +35,9 @@ def read_font(fontfile, size=150):
 
 
 def render(font, char, size=(128, 128), pad=20):
-    width, height = font.getsize(char)
+    # ImageFont.getsize() removed in v10.0.0
+    left, top, right, bottom = font.getbbox(char)
+    width, height = right - left, bottom - top
     max_size = max(width, height)
 
     if width < height:
