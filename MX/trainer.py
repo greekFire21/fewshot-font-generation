@@ -177,7 +177,7 @@ class MXTrainer(BaseTrainer):
                     self.log(losses, discs, stats)
                     self.logger.debug("GPU Memory usage: max mem_alloc = %.1fM / %.1fM",
                                       torch.cuda.max_memory_allocated() / 1000 / 1000,
-                                      torch.cuda.max_memory_cached() / 1000 / 1000)
+                                      torch.cuda.max_memory_reserved() / 1000 / 1000)
                     losses.resets()
                     discs.resets()
                     stats.resets()
@@ -209,6 +209,7 @@ class MXTrainer(BaseTrainer):
                 break
 
             self.step += 1
+            print(f"{self.step} steps")
 
         self.logger.info("Iteration finished.")
 
@@ -254,6 +255,7 @@ class MXTrainer(BaseTrainer):
             cids, eids = expert_assign(T_probs)
             _max_ids = torch.where(_b_comp_id)[0][cids]
             ac_loss_c += F.cross_entropy(_logit[eids], _max_ids)
+            T_probs = T_probs.cuda()
             acc = T_probs[cids, eids].sum() / n_experts
             accs += acc
 
